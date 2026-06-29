@@ -1,0 +1,6 @@
+Kab/Kota,Variabel,Data Training,Tahun Uji,Orde ARIMA,AIC,Hasil Prediksi,Testing,Error Absolut,Persen Error,Kategori
+Nasional,jml_timbulan_tahun,2019-2021,2022,"ARIMA(0, 2, 0)",39.6061,8475114.0852,18630383.9141,10155269.8289,54.5092,Tidak Akurat/Buruk
+Nasional,jml_timbulan_tahun,2019-2022,2023,"ARIMA(0, 2, 1)",74.2354,22316421.5791,23878638.6599,1562217.0808,6.5423,Sangat Akurat
+Nasional,jml_timbulan_tahun,2019-2023,2024,"ARIMA(0, 2, 1)",108.4379,27942897.2707,35895450.49,7952553.2193,22.1548,Layak/Cukup
+Nasional,jml_timbulan_tahun,2019-2024,2025,"ARIMA(0, 2, 1)",143.6971,42052619.0981,23071954.8441,18980664.254,82.2673,Tidak Akurat/Buruk
+Nasional,jml_timbulan_tahun,2019-2025,2026,"ARIMA(1, 2, 0)",180.7848,30708484.1752,-,-,-,Prediksi Final

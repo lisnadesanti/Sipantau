@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluasi Model - SIPANTAU</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* GLOBAL UI */
+    body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: #1f2937;
+    }
+
+    /* HEADER */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 50px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    header .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: #1f4720;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+    }
+
+    nav a {
+        margin-left: 25px;
+        text-decoration: none;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    nav a.active {
+        color: #1f4720;
+        border-bottom: 2px solid #1f4720;
+        padding-bottom: 2px;
+    }
+
+    /* KONTEN UTAMA */
+    .container {
+        padding: 40px 50px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        color: #1e293b;
+        font-size: 1.6rem;
+        font-weight: 700;
+    }
+
+    .btn-muat {
+        background-color: #1f4720;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 4px rgba(31, 71, 32, 0.2);
+        transition: 0.2s;
+    }
+
+    .btn-muat:hover {
+        background-color: #163816;
+    }
+
+    /* =======================================================
+        CARD PERFORMA MAPE (PERSIS GAMBAR KE-4) 
+        ======================================================= */
+    .metrics-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 30px;
+    }
+
+    .metric-card {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .icon-circle {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .icon-arima { background-color: #e0f2fe; color: #0ea5e9; }
+    .icon-ml { background-color: #dcfce7; color: #22c55e; }
+    .icon-winner { background-color: #fef3c7; color: #f59e0b; }
+
+    .metric-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .metric-title {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .metric-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    /* =======================================================
+        CARD SECTION & TABEL MAPE (PERSIS GAMBAR KE-4) 
+        ======================================================= */
+    .card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .card-header i {
+        color: #64748b;
+    }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 380px;
+        width: 100%;
+    }
+
+    /* Tabel Styling (Custom & DataTables) */
+    table.custom-tabel-mape, table.dataTable {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+
+    /* HEADER TABEL ALL CAPS, GREY BG */
+    table.custom-tabel-mape thead th, table.dataTable thead th {
+        background-color: #f8fafc;
+        color: #475569;
+        font-weight: 600;
+        padding: 14px 16px;
+        border-bottom: 2px solid #e2e8f0 !important;
+        text-align: left; 
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    table.custom-tabel-mape tbody td, table.dataTable tbody td {
+        padding: 16px;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: left;
+        vertical-align: middle;
+        color: #334155;
+        font-size: 0.95rem;
+    }
+
+    /* STATUS PEMENANG BADGE (Hijau seperti gambar) */
+    .badge-winner {
+        background-color: #d1fae5;
+        color: #065f46;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .badge-selisih {
+        background-color: #fff7ed;
+        color: #c2410c;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .nama-kota {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    /* =======================================================
+        BENTENG RESPONSIF LAYAR HP SMARTPHONE (MAX WIDTH 768PX)
+        ======================================================= */
+    @media screen and (max-width: 768px) {
+        header {
+            flex-direction: column;
+            padding: 15px 20px !important;
+            gap: 12px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        nav a {
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            padding: 20px 15px !important;
+        }
+
+        .page-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .metrics-container {
+            grid-template-columns: 1fr !important;
+            gap: 16px;
+        }
+
+        .chart-container {
+            height: 290px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="static/img/logosipsn_prediction.png" alt="Logo" width="40">
+        SIPANTAU
+    </div>
+    <nav>
+        <a href="{{ url_for('index', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'beranda' else '' }}">Beranda</a>
+        <a href="{{ url_for('prediksi_arima', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'prediksi' else '' }}">Prediksi ARIMA</a>
+        
+        {% if mode_aplikasi == 'project' %}
+            <a href="{{ url_for('prediksi_ml', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'prediksi_ml' else '' }}">Prediksi Global ML</a>
+            <a href="{{ url_for('perbandingan', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'perbandingan' else '' }}">Perbandingan Model</a>
+        {% endif %}
+        
+        <a href="{{ url_for('tentang', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'tentang' else '' }}">Tentang</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Perbandingan Performa Model</h2>
+        <button id="btnMuatData" class="btn-muat">
+            <i class="fas fa-sync-alt mr-1"></i> Sinkronkan Data Prediksi
+        </button>
+    </div>
+
+    <div class="metrics-container">
+        <div class="metric-card">
+            <div class="icon-circle icon-arima">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="metric-details">
+                <div class="metric-title">Evaluasi Error Model ARIMA (MAPE)</div>
+                <div class="metric-value">{{ mape_arima }}%</div>
+            </div>
+        </div>
+        <div class="metric-card">
+            <div class="icon-circle icon-ml">
+                <i class="fas fa-network-wired"></i>
+            </div>
+            <div class="metric-details">
+                <div class="metric-title">Evaluasi Error Global ML (MAPE)</div>
+                <div class="metric-value">{{ mape_ml }}%</div>
+            </div>
+        </div>
+        <div class="metric-card">
+            <div class="icon-circle icon-winner">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="metric-details">
+                <div class="metric-title">Kinerja Model Terbaik</div>
+                <div class="metric-value" style="color: #065f46;">{{ model_terbaik }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-table"></i> Tabel Evaluasi Model ARIMA & Global ML Berdasarkan MAPE
+        </div>
+        <div class="card-body" style="padding: 0;">
+            <div class="table-responsive" style="border: none; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <table class="custom-tabel-mape" style="width: 100%; min-width: 600px;">
+                    <thead>
+                        <tr>
+                            <th>Periode Prediksi</th>
+                            <th>Model ARIMA</th>
+                            <th>Global ML</th>
+                            <th>Status Pemenang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 500; color: #1e293b; padding-left: 24px;">Skala Nasional</td>
+                            <td style="font-weight: 600;">{{ mape_arima }}%</td>
+                            <td style="font-weight: 600;">{{ mape_ml }}%</td>
+                            <td>
+                                <span class="badge-winner">
+                                    <i class="fas fa-check-circle"></i> {{ model_terbaik }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-chart-bar"></i> Visualisasi Selisih Prediksi Timbulan Sampah (Periode Tahunan Nasional)
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="chartPerbandingan"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-list-ul"></i> Detail Perbandingan Tonase 
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" style="border: none; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <table id="tabelPerbandingan" class="display" style="width: 100%; min-width: 600px;">
+                    <thead>
+                        <tr>
+                            <th>Periode Prediksi</th>
+                            <th>ARIMA (Ton)</th>
+                            <th>Global ML (Ton)</th>
+                            <th>Selisih Prediksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script>
+    let myChart = null;
+    let dataTable = null;
+
+    $(document).ready(function() {
+        dataTable = $('#tabelPerbandingan').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json"
+            },
+            "order": [[0, "asc"]]
+        });
+
+        $('#btnMuatData').click(function() {
+            let btn = $(this);
+            let oriText = btn.html();
+            btn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Memproses...');
+            btn.prop('disabled', true);
+
+            let lastStepsSaved = sessionStorage.getItem('jumlah_tahun') || 2;
+
+            $.ajax({
+                url: '/get_data_perbandingan',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ steps: lastStepsSaved }), 
+                success: function(response) {
+                    value = response;
+                    btn.html(oriText);
+                    btn.prop('disabled', false);
+
+                    if(response.status === 'success') {
+                        dataTable.clear();
+                        response.tabel_data.forEach(function(row) {
+                            dataTable.row.add([
+                                `<span class="nama-kota">Tahun ${row.periode_prediksi}</span>`,
+                                row.arima.toLocaleString('id-ID'),
+                                row.ml.toLocaleString('id-ID'),
+                                `<span class="badge-selisih">${row.selisih.toLocaleString('id-ID')} Ton</span>`
+                            ]);
+                        });
+                        dataTable.draw();
+                        updateChart(response.chart.labels, response.chart.arima, response.chart.ml);
+                    } else {
+                        alert("Gagal memuat data: " + response.message);
+                    }
+                },
+                error: function() {
+                    btn.html(oriText);
+                    btn.prop('disabled', false);
+                    alert("Koneksi ke database gagal.");
+                }
+            });
+        });
+        
+        setTimeout(() => {
+            $('#btnMuatData').trigger('click');
+        }, 300);
+    });
+
+    function updateChart(labels, dataArima, dataML) {
+        let ctx = document.getElementById('chartPerbandingan').getContext('2d');
+        if (myChart != null) {
+            myChart.destroy();
+        }
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'ARIMA (Ton)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)', 
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        data: dataArima
+                    },
+                    {
+                        label: 'Global ML (Ton)',
+                        backgroundColor: '#1f4720', 
+                        borderColor: '#163816',
+                        borderWidth: 1,
+                        data: dataML
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 }
+                        }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: {
+                            font: { family: 'Inter', size: 12 },
+                            callback: function(value) {
+                                return value.toLocaleString('id-ID') + ' Ton';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

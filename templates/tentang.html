@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang - SIPANTAU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* BASE STYLE */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER NAVIGASI */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #1f4720;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            color: #374151;
+            transition: 0.3s;
+        }
+
+        nav a.active {
+            color: #1f4720;
+            border-bottom: 2px solid #1f4720;
+            padding-bottom: 2px;
+        }
+
+        /* HERO SECTION NATURAL GRADIENT (GAYA DIAGONAL REVERSED) */
+        .hero-section {
+            background: linear-gradient(135deg, #e5f0e9 0%, #fff 70%);
+            padding: 70px 50px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .hero-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1f4720;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #132e14;
+            margin-bottom: 20px;
+            line-height: 1.15;
+        }
+
+        .hero-text {
+            color: #4b5563;
+            line-height: 1.75;
+            font-size: 1.05rem;
+            text-align: justify;
+            max-width: 680px;
+        }
+
+        /* FOTO BLENDING NATURAL */
+        .hero-image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-image-container img {
+            max-height: 310px;
+            border-radius: 0px;
+            box-shadow: none;
+            border: none;
+            object-fit: cover;
+            mix-blend-mode: multiply;
+            opacity: 0.95;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        /* CARD MAIN STYLING (MODERN ACCENT LINE) */
+        .custom-card {
+            background-color: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #1f4720;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #132e14;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* UTILITY ICON WRAPPER */
+        .icon-wrapper {
+            width: 46px;
+            height: 46px;
+            border-radius: 8px;
+            background-color: #e5f0e9;
+            color: #1f4720;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .list-item-target {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.98rem;
+            color: #374151;
+        }
+
+        .list-item-target i {
+            color: #1f4720;
+            margin-top: 4px;
+            font-size: 1.1rem;
+        }
+
+        /* BOX LINK SUMBER DATA */
+        .source-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: #f8fafc;
+            transition: border-color 0.2s;
+        }
+
+        .source-box:hover {
+            border-color: #1f4720;
+        }
+
+        .source-link {
+            color: #0275d8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        /* FOOTER SINKRON DENGAN BERANDA */
+        footer {
+            background-color: #132e14;
+            color: #cbd5e1;
+            padding: 18px 50px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        .heart-icon {
+            color: #dc2626;
+        }
+
+        /* =======================================================
+            BENTENG RESPONSIF LAYAR HP SMARTPHONE (MAX WIDTH 768PX)
+            ======================================================= */
+        @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px !important;
+                gap: 12px;
+                text-align: center;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 5px;
+            }
+
+            nav a {
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+                font-size: 0.9rem;
+            }
+
+            .hero-section {
+                padding: 40px 20px !important;
+                text-align: center;
+            }
+
+            .hero-subtitle {
+                font-size: 1.8rem !important;
+            }
+
+            .hero-text {
+                text-align: justify;
+            }
+
+            .hero-image-container img {
+                max-height: 220px;
+            }
+
+            .col-lg-5.text-center {
+                order: 1 !important; /* Di HP, gambar otomatis berpindah ke atas teks agar serasi */
+                margin-bottom: 20px;
+            }
+
+            .col-lg-7.ps-lg-5 {
+                order: 2 !important;
+            }
+
+            .px-5 {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+
+            .custom-card {
+                padding: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="static/img/logosipsn_prediction.png" alt="Logo" width="40">
+        SIPANTAU
+    </div>
+    <nav>
+        <a href="{{ url_for('index', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'beranda' else '' }}">Beranda</a>
+        <a href="{{ url_for('prediksi_arima', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'prediksi' else '' }}">Prediksi ARIMA</a>
+        
+        {% if mode_aplikasi == 'project' %}
+            <a href="{{ url_for('prediksi_ml', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'prediksi_ml' else '' }}">Prediksi Global ML</a>
+            <a href="{{ url_for('perbandingan', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'perbandingan' else '' }}">Perbandingan Model</a>
+        {% endif %}
+        
+        <a href="{{ url_for('tentang', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'tentang' else '' }}">Tentang</a>
+    </nav>
+</header>
+
+<div class="hero-section">
+    <div class="container-fluid max-width-container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-5 text-center order-2 order-lg-1">
+                <div class="hero-image-container">
+                    <img src="static/img/logotentang.jpg" alt="Ilustrasi Real SIPSN Prediction" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-7 order-1 order-lg-2 ps-lg-5">
+                <div class="hero-title">Tentang Sistem</div>
+                <div class="hero-subtitle">SIPANTAU</div>
+                <p class="hero-text">
+                    SIPANTAU adalah platform prediksi timbulan sampah di Indonesia yang memanfaatkan data dari Sistem Informasi Pengelolaan Sampah Nasional (SIPSN KLHK) and teknologi modern seperti ARIMA dan Global Machine Learning untuk mendukung pengambilan keputusan berbasis data yang akurat, efektif, dan berkelanjutan.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid px-5 my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="custom-card">
+                <div class="row align-items-start g-4">
+                    <div class="col-lg-6">
+                        <div class="section-title">
+                            <div class="icon-wrapper"><i class="fas fa-bullseye"></i></div>
+                            Tujuan Aplikasi
+                        </div>
+                        <p class="text-muted mb-0" style="text-align: justify; font-size: 1rem; line-height: 1.7;">
+                            Aplikasi ini dikembangkan untuk membantu pemerintah, akademisi, and pemangku kepentingan dalam memprediksi timbulan sampah secara akurat, merencanakan pengelolaan sampah yang lebih efektif, serta mendukung keberlanjutan lingkungan di Indonesia.
+                        </p>
+                    </div>
+                    <div class="col-lg-6 pt-2 pt-lg-0">
+                        <div class="list-item-target"><i class="fas fa-check-circle"></i> <span>Memprediksi timbulan sampah secara akurat</span></div>
+                        <div class="list-item-target"><i class="fas fa-check-circle"></i> <span>Merencanakan pengelolaan sampah yang lebih efektif</span></div>
+                        <div class="list-item-target"><i class="fas fa-check-circle"></i> <span>Mendukung keberlanjutan lingkungan di Indonesia</span></div>
+                        <div class="list-item-target"><i class="fas fa-check-circle"></i> <span>Menyediakan perbandingan performa model (ARIMA & Global ML)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="custom-card">
+                <div class="section-title">
+                    <div class="icon-wrapper"><i class="fas fa-star"></i></div>
+                    Fitur Utama Platform
+                </div>
+                <div class="row g-4 mt-1">
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded-3 h-100 bg-light-subtle">
+                            <div class="icon-wrapper mb-3"><i class="fas fa-chart-line"></i></div>
+                            <h5 class="fw-bold text-dark mb-2">Prediksi ARIMA</h5>
+                            <p class="text-muted small mb-0">Prediksi time series menggunakan model ARIMA untuk melihat tren timbulan sampah di masa depan.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded-3 h-100 bg-light-subtle">
+                            <div class="icon-wrapper mb-3"><i class="fas fa-brain"></i></div>
+                            <h5 class="fw-bold text-dark mb-2">Prediksi Global ML</h5>
+                            <p class="text-muted small mb-0">Prediksi menggunakan model Machine Learning berbasis data global untuk hasil yang lebih akurat.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded-3 h-100 bg-light-subtle">
+                            <div class="icon-wrapper mb-3"><i class="fas fa-balance-scale"></i></div>
+                            <h5 class="fw-bold text-dark mb-2">Perbandingan Model</h5>
+                            <p class="text-muted small mb-0">Bandingkan performa model ARIMA dan Global ML berdasarkan nilai MAPE untuk evaluasi yang relevan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="custom-card h-100">
+                <div class="section-title">
+                    <div class="icon-wrapper"><i class="fas fa-database"></i></div>
+                    Sumber Data Historis
+                </div>
+                <p class="text-muted small mb-3">Data analisis komparatif dalam sistem ini sepenuhnya bersumber dari otoritas resmi:</p>
+                <div class="source-box">
+                    <i class="fas fa-file-alt text-success fs-2"></i>
+                    <div>
+                        <div class="fw-bold text-dark small">Sistem Informasi Pengelolaan Sampah Nasional (SIPSN) - KLHK</div>
+                        <a href="https://sipsn.menlhk.go.id" target="_blank" class="source-link small">https://sipsn.menlhk.go.id</a>
+                    </div>
+                </div>
+                <p class="text-muted mt-3 small mb-0">Integrasi mencakup rekaman total timbulan sampah tahunan skala regional/nasional di Indonesia.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-card h-100">
+                <div class="section-title">
+                    <div class="icon-wrapper"><i class="fas fa-cogs"></i></div>
+                    Metodologi Komparasi
+                </div>
+                <p class="text-muted small mb-3">Aplikasi ini membandingkan akurasi estimasi lewat dua pendekatan ilmiah:</p>
+                <ul class="text-muted small ps-3 mb-0">
+                    <li class="mb-2"><strong>ARIMA (Autoregressive Integrated Moving Average):</strong> Pemodelan statistik berbasis nilai historis untuk menangkap trend linear.</li>
+                    <li class="mb-2"><strong>Global Machine Learning:</strong> Pendekatan non-linear kelompok yang melatih bobot multi-wilayah secara simultan.</li>
+                </ul>
+                <p class="text-muted small mb-0 mt-3">Metrik evaluasi mutlak menggunakan pengujian nilai <strong>MAPE</strong>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div>© <span id="copyright-year"></span> SIPANTAU. Semua hak dilindungi.</div>
+    <div>Dibuat dengan <i class="fas fa-heart heart-icon"></i> untuk Indonesia</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById("copyright-year").innerText = new Date().getFullYear();
+</script>
+</body>
+</html>
