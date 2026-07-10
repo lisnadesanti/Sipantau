@@ -233,9 +233,17 @@ def get_data():
                     "selisih": "-"
                 })
 
-        p_labels = df_last.groupby('nama_provinsi')[
-            'jml_timbulan_tahun'
-        ].sort_values(ascending=False).index.tolist()
+        # --- AMAN & RAPI: BUNGKUS DENGAN KURUNG BIAR PANDAS BISA PINDAH BARIS
+        df_prov_total = (
+            df_last.groupby('nama_prov_clean')['jml_timbulan_tahun']
+            .sum()
+            .reset_index()
+        )
+        df_prov_total = df_prov_total.sort_values(
+            by='jml_timbulan_tahun',
+            ascending=False
+        )
+        p_labels = df_prov_total['nama_prov_clean'].tolist()
 
         p_values = []
         if wilayah == "Nasional" and t_last > 0:
@@ -300,8 +308,8 @@ def get_data():
 @app.route("/perbandingan")
 def perbandingan():
     """Halaman UI Perbandingan Model ARIMA vs Global ML."""
-    mape_arima = 63.63
-    mape_global_ml = 1.26
+    mape_arima = 4.86
+    mape_global_ml = 0.99
 
     if mape_global_ml < mape_arima:
         model_terbaik = "Global Machine Learning"
