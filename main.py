@@ -235,7 +235,7 @@ def get_data():
 
         # --- AMAN & RAPI: BUNGKUS DENGAN KURUNG BIAR PANDAS BISA PINDAH BARIS
         df_prov_total = (
-            df_last.groupby('nama_prov_clean')['jml_timbulan_tahun']
+            df_last.groupby('nama_provinsi')['jml_timbulan_tahun']
             .sum()
             .reset_index()
         )
@@ -243,7 +243,7 @@ def get_data():
             by='jml_timbulan_tahun',
             ascending=False
         )
-        p_labels = df_prov_total['nama_prov_clean'].tolist()
+        p_labels = df_prov_total['nama_provinsi'].tolist()
 
         p_values = []
         if wilayah == "Nasional" and t_last > 0:
