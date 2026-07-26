@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIPANTAU</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icon Bootstrap & Bootstrap 5 CSS untuk Sidebar Offcanvas -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     body {
@@ -14,6 +17,7 @@
         color: #1f2937;
     }
 
+    /* NAVBAR MENEMPEL DI ATAS (STICKY) SAAT DI-SCROLL DI HP/DESKTOP */
     header {
         display: flex;
         justify-content: space-between;
@@ -21,6 +25,9 @@
         padding: 20px 50px;
         background-color: #fff;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 
     header .logo {
@@ -30,6 +37,49 @@
         font-weight: 700;
         font-size: 1.3rem;
         color: #1f4720;
+    }
+
+    /* CSS Tambahan Khusus Tombol Garis Tiga DLH (Kiri Logo) */
+    .btn-toggle-sidebar {
+        background: transparent;
+        border: 1.5px solid #1f4720;
+        color: #1f4720;
+        border-radius: 8px;
+        padding: 4px 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-toggle-sidebar:hover {
+        background-color: #1f4720;
+        color: #ffffff;
+    }
+
+    /* CSS Khusus Tampilan Sidebar Offcanvas Publik */
+    .offcanvas-dlh {
+        background-color: #0b4f32 !important;
+        color: #ffffff;
+    }
+
+    .offcanvas-dlh .nav-link-sb {
+        color: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+    .offcanvas-dlh .nav-link-sb:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
     }
 
     nav a {
@@ -90,12 +140,24 @@
         border-radius: 8px;
         padding: 12px 25px;
         cursor: pointer;
-        border: none;
         display: inline-flex;
         align-items: center;
         gap: 10px;
         font-size: 1rem;
         text-decoration: none;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-text .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(31, 71, 32, 0.3);
+        background-color: #163317 !important;
+    }
+
+    .hero-text .btn:active {
+        transform: translateY(-1px);
     }
 
     .btn .btn-icon {
@@ -105,6 +167,7 @@
         flex-shrink: 0;
     }
 
+    /* KEDUA TOMBOL WARNA HIJAU SAMA PERSIS (#1f4720) */
     .btn-arima {
         background-color: #1f4720;
         color: white;
@@ -115,9 +178,12 @@
     }
 
     .btn-ml {
-        background-color: #fff;
-        color: #1f4720;
-        border: 2px solid #1f4720;
+        background-color: #1f4720;
+        color: white;
+    }
+
+    .btn-ml .btn-icon {
+        filter: brightness(0) invert(1);
     }
 
     .hero-image {
@@ -425,6 +491,10 @@
 
 <header>
     <div class="logo">
+        <!-- TOMBOL GARIS TIGA MEMBUKA SIDEBAR NAVIGASI ELEGANT -->
+        <button class="btn-toggle-sidebar" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarPublik" title="Menu Navigasi">
+            <i class="bi bi-list"></i>
+        </button>
         <img src="static/img/logosipsn_prediction.png" alt="Logo" width="40">
         SIPANTAU
     </div>
@@ -440,6 +510,41 @@
         <a href="{{ url_for('tentang', mode=mode_aplikasi) }}" class="{{ 'active' if active_page == 'tentang' else '' }}">Tentang</a>
     </nav>
 </header>
+
+<!-- === SIDEBAR HIJAU OFFCANVAS NAVIGASI & AKSES LOGIN DLH === -->
+<div class="offcanvas offcanvas-start offcanvas-dlh" tabindex="-1" id="sidebarPublik" style="width: 280px;">
+    <div class="offcanvas-header border-bottom border-light border-opacity-25 p-3">
+        <div class="d-flex align-items-center gap-2">
+            <img src="static/img/logosipsn_prediction.png" alt="Logo" width="32" class="bg-white rounded-circle p-1">
+            <h5 class="offcanvas-title fw-bold text-white mb-0">SIPANTAU</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+        <div>
+            <small class="text-uppercase text-light opacity-50 fw-bold d-block mb-3" style="font-size: 10px; letter-spacing: 1px;">MENU NAVIGASI</small>
+            
+            <div class="nav flex-column gap-1">
+                <a href="/" class="nav-link-sb"><i class="bi bi-house-door"></i> Beranda</a>
+                <a href="/prediksi_arima" class="nav-link-sb"><i class="bi bi-graph-up-arrow"></i> Prediksi ARIMA</a>
+                {% if mode_aplikasi == 'project' %}
+                    <a href="/prediksi_ml" class="nav-link-sb"><i class="bi bi-cpu"></i> Prediksi Global ML</a>
+                    <a href="/perbandingan" class="nav-link-sb"><i class="bi bi-bar-chart-steps"></i> Perbandingan Model</a>
+                {% endif %}
+                <a href="/tentang" class="nav-link-sb"><i class="bi bi-info-circle"></i> Tentang Sistem</a>
+            </div>
+        </div>
+
+        <!-- TOMBOL LOGIN KHUSUS ADMIN DLH -->
+        <div class="pt-3 border-top border-light border-opacity-25">
+            <small class="text-uppercase text-light opacity-50 fw-bold d-block mb-2" style="font-size: 10px;">AKTOR KHUSUS</small>
+            <a href="/login" class="btn btn-warning text-dark fw-bold w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                <i class="bi bi-shield-lock-fill"></i> Login Admin DLH
+            </a>
+        </div>
+    </div>
+</div>
 
 <section class="hero">
     <div class="hero-text">
@@ -520,6 +625,9 @@
     </div>
     {% endif %}
 </section>
+
+<!-- Script Bootstrap untuk animasi Offcanvas -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 const ctx = document.getElementById('trendChart').getContext('2d');

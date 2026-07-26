@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Evaluasi Model - SIPANTAU</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icon Bootstrap & Bootstrap 5 CSS untuk Offcanvas Sidebar -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,6 +40,49 @@
         color: #1f4720;
     }
 
+    /* Styling Tombol Garis Tiga DLH */
+    .btn-toggle-sidebar {
+        background: transparent;
+        border: 1.5px solid #1f4720;
+        color: #1f4720;
+        border-radius: 8px;
+        padding: 4px 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-toggle-sidebar:hover {
+        background-color: #1f4720;
+        color: #ffffff;
+    }
+
+    /* Styling Sidebar DLH Offcanvas */
+    .offcanvas-dlh {
+        background-color: #0b4f32 !important;
+        color: #ffffff;
+    }
+
+    .offcanvas-dlh .nav-link-sb {
+        color: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+    .offcanvas-dlh .nav-link-sb:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+    }
+
     nav {
         display: flex;
         align-items: center;
@@ -55,9 +101,17 @@
         padding-bottom: 2px;
     }
 
-    /* KONTEN UTAMA */
-    .container {
-        padding: 40px 50px;
+    .breadcrumb-section {
+        padding: 20px 50px;
+        background-color: #e5f0e9;
+        margin-bottom: 30px;
+    }
+
+    .breadcrumb-section h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #1f4720;
+        font-weight: 700;
     }
 
     .page-header {
@@ -92,9 +146,7 @@
         background-color: #163816;
     }
 
-    /* =======================================================
-        CARD PERFORMA MAPE (PERSIS GAMBAR KE-4) 
-        ======================================================= */
+    /* CARD PERFORMA MAPE */
     .metrics-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -145,9 +197,7 @@
         color: #1e293b;
     }
 
-    /* =======================================================
-        CARD SECTION & TABEL MAPE (PERSIS GAMBAR KE-4) 
-        ======================================================= */
+    /* CARD SECTION & TABEL MAPE */
     .card {
         background-color: #fff;
         border-radius: 12px;
@@ -181,13 +231,12 @@
         width: 100%;
     }
 
-    /* Tabel Styling (Custom & DataTables) */
+    /* Tabel Styling */
     table.custom-tabel-mape, table.dataTable {
         border-collapse: collapse !important;
         width: 100% !important;
     }
 
-    /* HEADER TABEL ALL CAPS, GREY BG */
     table.custom-tabel-mape thead th, table.dataTable thead th {
         background-color: #f8fafc;
         color: #475569;
@@ -209,7 +258,6 @@
         font-size: 0.95rem;
     }
 
-    /* STATUS PEMENANG BADGE (Hijau seperti gambar) */
     .badge-winner {
         background-color: #d1fae5;
         color: #065f46;
@@ -236,9 +284,7 @@
         color: #1e293b;
     }
 
-    /* =======================================================
-        BENTENG RESPONSIF LAYAR HP SMARTPHONE (MAX WIDTH 768PX)
-        ======================================================= */
+    /* BENTENG RESPONSIF LAYAR HP SMARTPHONE */
     @media screen and (max-width: 768px) {
         header {
             flex-direction: column;
@@ -261,8 +307,14 @@
             font-size: 0.9rem;
         }
 
-        .container {
-            padding: 20px 15px !important;
+        .breadcrumb-section {
+            padding: 20px !important;
+            text-align: center;
+        }
+
+        .px-5 {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
         }
 
         .page-header {
@@ -286,6 +338,10 @@
 
 <header>
     <div class="logo">
+        <!-- TOMBOL GARIS TIGA UNTUK BUKA SIDEBAR -->
+        <button class="btn-toggle-sidebar" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarPublik" title="Menu Navigasi">
+            <i class="bi bi-list"></i>
+        </button>
         <img src="static/img/logosipsn_prediction.png" alt="Logo" width="40">
         SIPANTAU
     </div>
@@ -302,7 +358,50 @@
     </nav>
 </header>
 
-<div class="container">
+<!-- === SIDEBAR HIJAU MELUNCUR (OFFCANVAS) === -->
+<div class="offcanvas offcanvas-start offcanvas-dlh" tabindex="-1" id="sidebarPublik" style="width: 280px;">
+    <div class="offcanvas-header border-bottom border-light border-opacity-25 p-3">
+        <div class="d-flex align-items-center gap-2">
+            <img src="static/img/logosipsn_prediction.png" alt="Logo" width="32" class="bg-white rounded-circle p-1">
+            <h5 class="offcanvas-title fw-bold text-white mb-0">SIPANTAU</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+        <div>
+            <small class="text-uppercase text-light opacity-50 fw-bold d-block mb-3" style="font-size: 10px; letter-spacing: 1px;">MENU NAVIGASI</small>
+            
+            <div class="nav flex-column gap-1">
+                <a href="/" class="nav-link-sb"><i class="bi bi-house-door"></i> Beranda</a>
+                <a href="/prediksi_arima" class="nav-link-sb"><i class="bi bi-graph-up-arrow"></i> Prediksi ARIMA</a>
+                {% if mode_aplikasi == 'project' %}
+                    <a href="/prediksi_ml" class="nav-link-sb"><i class="bi bi-cpu"></i> Prediksi Global ML</a>
+                    <a href="/perbandingan" class="nav-link-sb"><i class="bi bi-bar-chart-steps"></i> Perbandingan Model</a>
+                {% endif %}
+                <a href="/tentang" class="nav-link-sb"><i class="bi bi-info-circle"></i> Tentang Sistem</a>
+            </div>
+        </div>
+
+        <!-- TOMBOL LOGIN KHUSUS ADMIN DLH -->
+        <div class="pt-3 border-top border-light border-opacity-25">
+            <small class="text-uppercase text-light opacity-50 fw-bold d-block mb-2" style="font-size: 10px;">AKTOR KHUSUS</small>
+            <a href="/login" class="btn btn-warning text-dark fw-bold w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                <i class="bi bi-shield-lock-fill"></i> Login Admin DLH
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="breadcrumb-section">
+    <div class="container-fluid px-0">
+        <h2>Perbandingan Performa Model</h2>
+        <p class="mb-0 text-muted">Evaluasi akurasi dan selisih prediksi antara model ARIMA dan Global ML.</p>
+    </div>
+</div>
+
+<!-- LEBAR CONTAINER FLUID PX-5 DISAMAKAN DENGAN PREDIKSI_ML.HTML -->
+<div class="container-fluid px-5">
     <div class="page-header">
         <h2>Perbandingan Performa Model</h2>
         <button id="btnMuatData" class="btn-muat">
@@ -407,6 +506,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <script>
